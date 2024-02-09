@@ -16,10 +16,19 @@ new Vue({
             inProgressTasks: [],
             testingTasks: [],
             completedTasks: [],
+
         }
     },
     methods: {
         addTask() {
+            if (!this.newTask.deadline) {
+                alert('Пожалуйста, укажите дэдлайн.');
+                return;
+            }
+            if (new Date(this.newTask.deadline) <= new Date(this.newTask.createdAt)) {
+                alert('Дэдлайн не может быть раньше даты создания или равен ей.');
+                return;
+            }
             this.plannedTasks.push({...this.newTask});
             this.newTask = {
                 title: '',
@@ -27,7 +36,8 @@ new Vue({
                 deadline: '',
                 createdAt: new Date().toLocaleString(),
                 lastEdited: null,
-                returnReason: null
+                returnReason: null,
+                isOverdue: false
             };
         },
         deleteTask(taskIndex) {
@@ -62,6 +72,7 @@ new Vue({
                 return;
             }
             const taskToMove = this.testingTasks.splice(taskIndex, 1)[0];
+            taskToMove.isOverdue = new Date(taskToMove.deadline) < new Date();
             this.inProgressTasks.push(taskToMove);
         }
     }
