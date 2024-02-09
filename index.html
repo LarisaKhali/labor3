@@ -5,13 +5,39 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanban</title>
+      <link rel="stylesheet" href="css/main.css">
+      <script defer src="js/vue.js"></script>
       <script src="js/main.js" defer></script>
-      <script src="css/main.css" defer></script>
+
   </head>
   <body>
   <div id="app">
       <div class="column">
           <h2>Запланированные задачи</h2>
+          <form @submit.prevent="addTask">
+              <label for="createdAt">Дата создания:</label>
+              <input id="createdAt" type="date" v-model="newTask.createdAt">
+
+              <label for="title">Заголовок задачи:</label>
+              <input id="title" type="text" v-model="newTask.title">
+
+              <label for="description">Описание задачи:</label>
+              <textarea id="description" v-model="newTask.description"></textarea>
+
+              <label for="deadline">Дэдлайн:</label>
+              <input id="deadline" type="date" v-model="newTask.deadline">
+              <button type="submit">Добавить задачу</button>
+          </form>
+          <div v-for="(task, index) in plannedTasks" :key="index">
+              <h3>{{ task.title }}</h3>
+              <p>{{ task.description }}</p>
+              <p>Дэдлайн: {{ task.deadline }}</p>
+              <p>Дата создания: {{ task.createdAt }}</p>
+              <p>Последнее редактирование: {{ task.lastEdited }}</p>
+              <button @click="editTask(index, task)">Редактировать</button>
+              <button @click="deleteTask(index)">Удалить</button>
+              <button @click="moveToInProgress(index)">Переместить в работу</button>
+          </div>
       </div>
       <div class="column">
           <h2>Задачи в работе</h2>
