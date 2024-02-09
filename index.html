@@ -122,6 +122,9 @@
                   <p>Дэдлайн: {{ task.deadline }}</p>
                   <p>Дата создания: {{ task.createdAt }}</p>
                   <p>Последнее редактирование: {{ task.lastEdited }}</p>
+                  <button @click="returnToInProgress(index)">Вернуть в работу</button>
+                  <label for="returnReason">Причина возврата:</label>
+                  <input id="returnReason" type="text" v-model="task.returnReason">
               </div>
               <div v-else>
                   <form @submit.prevent="finishEditing(index, 'testingTasks')">
